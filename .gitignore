@@ -1,1 +1,17 @@
-.qodo
+# Ignore SQLite database files
+*.sqlite3
+*.db
+
+# Ignore Django and Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore environment files
+.env
+*.env
+/venv
+
+# Ignore migrations (optional, but useful in some cases)
+**/migrations/**
