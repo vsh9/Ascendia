@@ -17,14 +17,29 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, password=None, **extra_fields):
         """Create and return a superuser."""
-        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_staff", True) 
+        #for internal authentication i.e for django to understand if the user can bypass as a administrator or not
         extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("role", User.Role.ADMIN)
+        
         return self.create_user(email, password, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):
+    class Role(models.TextChoices):
+        STUDENT = 'student', 'Student'
+        ALUMNI = 'alumni', 'Alumni'
+        ADMIN = 'admin', 'Admin'
+    
+    # Role field: default is STUDENT for regular users; ADMIN assigned by default for superusers
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)  # Required for admin panel access
+    
+    role = models.CharField(
+        max_length=10,
+        choices=Role.choices,
+        default=Role.STUDENT,
+    )
     
     groups = models.ManyToManyField(
         Group,

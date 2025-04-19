@@ -2,10 +2,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth import get_user_model
-from .serializers import UserSerializer, LoginSerializer
+from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import permission_classes
+from django.contrib.auth import get_user_model
+from .serializers import UserSerializer, LoginSerializer
 
 User = get_user_model()
 
@@ -26,6 +27,8 @@ class RegisterView(APIView):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@permission_classes([AllowAny])
 class LoginView(APIView):
     """User login view with JWT authentication"""
     def post(self, request):

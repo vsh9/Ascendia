@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',  # Required for DRF
     'rest_framework_simplejwt',  # JWT Authentication
-    'users',  # User app
+    'users',
+    'events',
     'corsheaders',
 ]
 
