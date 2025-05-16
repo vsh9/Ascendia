@@ -1,3 +1,20 @@
+# Ignore SQLite database files
+*.sqlite3
+*.db
+
+# Ignore Django and Python cache files
+_pycache_/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore environment files
+.env
+*.env
+/venv
+
+# Ignore migrations (optional, but useful in some cases)
+*/migrations/*
 
 # Logs
 logs
@@ -19,7 +36,7 @@ dist-ssr
 .idea
 .DS_Store
 *.suo
-*.ntvs*
+.ntvs
 *.njsproj
 *.sln
 *.sw?
