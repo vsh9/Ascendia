@@ -3,7 +3,7 @@
 *.db
 
 # Ignore Django and Python cache files
-_pycache_/
+__pycache__/
 *.pyc
 *.pyo
 *.pyd
@@ -14,7 +14,7 @@ _pycache_/
 /venv
 
 # Ignore migrations (optional, but useful in some cases)
-*/migrations/*
+**/migrations/**
 
 # Logs
 logs
