@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -76,7 +77,7 @@ export default function MentorshipPage() {
       <Navbar />
       
       <main className="flex-1">
-        <section className="pt-20 pb-16 sm:pt-24 sm:pb-20 lg:pt-32 lg:pb-24 bg-muted/30">
+        <section className="pt-24 pb-16 sm:pt-24 sm:pb-20 lg:pt-32 lg:pb-24 bg-muted/30">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
               <PageTitle>

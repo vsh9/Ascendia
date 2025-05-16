@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -32,10 +31,10 @@ const samplePosts = [
 ];
 
 const trendingTopics = [
-  { id: 1, name: "Machine Learning", posts: 156 },
-  { id: 2, name: "Career Growth", posts: 124 },
-  { id: 3, name: "Internships", posts: 98 },
-  { id: 4, name: "Tech Interview Prep", posts: 87 },
+  { id: 0, name: "Machine Learning", posts: 156 },
+  { id: 0, name: "Career Growth", posts: 124 },
+  { id: 0, name: "Internships", posts: 98 },
+  { id: 0, name: "Tech Interview Prep", posts: 87 },
 ];
 
 export default function ForumPage() {

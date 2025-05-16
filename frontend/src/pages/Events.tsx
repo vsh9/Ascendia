@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PageTitle, LeadText } from "@/components/ui/typography";
@@ -5,9 +6,8 @@ import { Calendar, Clock, MapPin, MessageSquare } from "lucide-react";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-// Sample event data - make it available globally for the EventRegistration page
+// Sample event data with registrationLinks
 export const events = [
   {
     id: 1,
@@ -18,6 +18,7 @@ export const events = [
     description: "Join us for the biggest tech conference of the year featuring industry leaders, workshops, and networking opportunities.",
     imageUrl: "linear-gradient(225deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%)",
     speakers: ["Sarah Chen", "Alex Johnson", "Michael Rodriguez"],
+    registrationLink: "https://techconf2024.example.com/register", // Admin-defined link
   },
   {
     id: 2,
@@ -28,11 +29,11 @@ export const events = [
     description: "Explore the latest in artificial intelligence with hands-on workshops and expert presentations.",
     imageUrl: "linear-gradient(102.3deg, rgba(147,39,143,1) 5.9%, rgba(234,172,232,1) 64%, rgba(246,219,245,1) 89%)",
     speakers: ["Dr. Emma Thompson", "Prof. Raj Kumar", "Dr. Lisa Wang"],
+    registrationLink: "https://aisummit.example.com/register", // Admin-defined link
   },
 ];
 
 export default function Events() {
-  const navigate = useNavigate();
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{ text: string; isUser: boolean }>>([
     { text: "Hi! I'm your event assistant. How can I help you today?", isUser: false },
@@ -57,8 +58,9 @@ export default function Events() {
     setUserInput("");
   };
 
-  const handleRegister = (eventId: number) => {
-    navigate(`/events/register/${eventId}`);
+  const handleRegister = (registrationLink: string) => {
+    // Open the registration link in a new tab
+    window.open(registrationLink, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -119,7 +121,7 @@ export default function Events() {
                     <div className="pt-4">
                       <Button 
                         className="w-full"
-                        onClick={() => handleRegister(event.id)}
+                        onClick={() => handleRegister(event.registrationLink)}
                       >
                         Register Now
                       </Button>

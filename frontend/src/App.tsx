@@ -11,6 +11,9 @@ import Forum from "./pages/Forum";
 import Events from "./pages/Events";
 import EventRegistration from "./pages/EventRegistration";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import ProfileSetup from "./pages/ProfileSetup";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +32,9 @@ const App = () => (
           <Route path="/events" element={<Events />} />
           <Route path="/events/register/:id" element={<EventRegistration />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/profile/setup" element={<ProfileSetup />} />
+          <Route path="/profile" element={<Profile />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

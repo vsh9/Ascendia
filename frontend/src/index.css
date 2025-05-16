@@ -61,6 +61,11 @@
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80;
   }
+  
+  /* Added new utility class for consistent spacing across pages */
+  .section-padding {
+    @apply pt-24 pb-16 px-6 lg:px-8;
+  }
 }
 
 @keyframes float {

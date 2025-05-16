@@ -62,7 +62,7 @@ export default function EventRegistration() {
       <Navbar />
       
       <main className="flex-1">
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 py-16 pt-24">
           <PageTitle className="text-center mb-12">
             Register for {event.title}
           </PageTitle>
