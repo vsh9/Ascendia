@@ -1,9 +1,9 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
-from .models import Job
-from .serializers import JobSerializer
 from rest_framework.filters import OrderingFilter
 from rest_framework import filters
+from .models import Job
+from .serializers import JobSerializer
 
 class JobListCreateAPIView(generics.ListCreateAPIView):
     queryset = Job.objects.all().order_by('-date_posted')

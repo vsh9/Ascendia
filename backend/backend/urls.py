@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from jobboard.views import JobListAPIView,JobListCreateAPIView,JobRetrieveAPIView,JobDestroyAPIView
 from users.views import RegisterView,LoginView
+from events.views import EventListCreateAPIView, EventRetrieveUpdateDestroyAPIView
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -30,4 +31,6 @@ urlpatterns = [
     path('jobboard/<int:pk>/', JobRetrieveAPIView.as_view(), name='job-retrieve'),
     path('jobboard/', JobListAPIView.as_view(), name='job-list'),
     path('jobboard/<int:pk>/', JobDestroyAPIView.as_view(), name='job-detail'),
+     path('events/', EventListCreateAPIView.as_view(), name='event-list-create'),
+    path('events/<int:pk>/', EventRetrieveUpdateDestroyAPIView.as_view(), name='event-detail'),
 ]
