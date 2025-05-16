@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from jobboard.views import JobListAPIView,JobListCreateAPIView,JobRetrieveAPIView,JobDestroyAPIView
 from users.views import RegisterView,LoginView
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
@@ -25,4 +26,8 @@ urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('jobboard/', JobListCreateAPIView.as_view(), name='job-list-create'),
+    path('jobboard/<int:pk>/', JobRetrieveAPIView.as_view(), name='job-retrieve'),
+    path('jobboard/', JobListAPIView.as_view(), name='job-list'),
+    path('jobboard/<int:pk>/', JobDestroyAPIView.as_view(), name='job-detail'),
 ]
