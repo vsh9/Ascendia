@@ -1,6 +1,9 @@
+"""Module providing Detailes about the Jobboard"""
+
 from django.db import models
 
 class Job(models.Model):
+    """Provides Details about the current Job Openings"""  
     JOB_TYPE_CHOICES = [
         ('Full-time', 'Full-time'),
         ('Part-time', 'Part-time'),
@@ -8,7 +11,6 @@ class Job(models.Model):
         ('Internship', 'Internship'),
         ('Freelance', 'Freelance'),
     ]
-    
     title = models.CharField(max_length=100)
     company = models.CharField(max_length=100)
     description = models.TextField()
@@ -19,7 +21,10 @@ class Job(models.Model):
     experience_required = models.IntegerField()  # in years
     is_remote = models.BooleanField(default=False)
     date_posted = models.DateTimeField(auto_now_add=True)
-
     def __str__(self):
         return f"{self.title} at {self.company}"
 
+class Resume(models.Model):
+    """Resume Upload"""
+    file = models.FileField(upload_to='resumes/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)

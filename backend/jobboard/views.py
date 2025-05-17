@@ -4,6 +4,10 @@ from rest_framework.filters import OrderingFilter
 from rest_framework import filters
 from .models import Job
 from .serializers import JobSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import ResumeSerializer
 
 class JobListCreateAPIView(generics.ListCreateAPIView):
     queryset = Job.objects.all().order_by('-date_posted')
@@ -48,3 +52,14 @@ class JobListAPIView(generics.ListAPIView):
 class JobDestroyAPIView(generics.DestroyAPIView):
     queryset = Job.objects.all()
     serializer_class = JobSerializer
+    
+class ResumeUploadView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = ResumeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                "message": "Resume uploaded successfully",
+                "data": serializer.data
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
