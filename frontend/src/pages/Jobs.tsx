@@ -264,21 +264,7 @@ export default function Jobs() {
                     Apply Filters
                   </Button>
 
-                  <Button 
-                    className="w-full"
-                    variant="outline"
-                    onClick={() => {
-                      setFilters({
-                        state: "",
-                        city: "",
-                        salary: [0, 2000000],
-                        type: "",
-                      });
-                      setFilteredJobs(jobs);
-                    }}
-                  >
-                    Reset Filters
-                  </Button>
+                  
                 </CardContent>
               </Card>
 
