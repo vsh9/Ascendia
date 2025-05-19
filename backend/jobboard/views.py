@@ -1,3 +1,11 @@
+import sys
+import os
+
+# Add the parent folder of 'jobml' to sys.path so we can import it
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))               
+PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, '../..'))  
+sys.path.append(PROJECT_ROOT)
+
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.filters import OrderingFilter
@@ -8,6 +16,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import ResumeSerializer
+from jobml.resume_parser import extract_text_from_pdf
+from jobml.recommender import extract_skills, recommend_jobs
+
 
 class JobListCreateAPIView(generics.ListCreateAPIView):
     queryset = Job.objects.all().order_by('-date_posted')
@@ -57,9 +68,36 @@ class ResumeUploadView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = ResumeSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response({
-                "message": "Resume uploaded successfully",
-                "data": serializer.data
-            }, status=status.HTTP_201_CREATED)
+            resume = serializer.save()
+            file_path = resume.file.path
+
+            try:
+                # 1. Extract text from PDF
+                text = extract_text_from_pdf(file_path)
+
+                # 2. Extract skills from the text
+                skills = extract_skills(text)
+
+                # 3. Get job recommendations
+                recommendations = recommend_jobs(skills)
+
+                return Response({
+                    "message": "Resume uploaded successfully",
+                    "skills": skills,
+                    "recommendations": [
+                        {
+                            "job_title": rec[0],
+                            "score": rec[1],
+                            "matched_skills": list(rec[2])
+                        } for rec in recommendations
+                    ]
+                }, status=status.HTTP_201_CREATED)
+
+            except Exception as e:
+                print("ML Error:", str(e))
+                return Response({
+                    "message": "Resume uploaded, but ML failed",
+                    "error": str(e)
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
