@@ -65,7 +65,8 @@ INSTALLED_APPS = [
     'events',
     'corsheaders',
     'jobboard',
-    'community'
+    'community',
+    'chat',
 ]
 
 MIDDLEWARE = [

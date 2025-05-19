@@ -28,4 +28,5 @@ urlpatterns = [
     path('jobboard/', include('jobboard.urls')),
     path('events/', include('events.urls')),
     path('community/', include('community.urls')),
+    path('chat/', include('chat.urls')),
 ]
