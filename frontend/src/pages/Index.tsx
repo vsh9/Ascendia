@@ -28,14 +28,9 @@ export default function Index() {
                   experienced professionals.
                 </LeadText>
                 <div className="mt-10 flex items-center gap-x-6">
-                  <Link to="/mentorship">
+                  <Link to="/login">
                     <Button size="lg" className="rounded-full">
                       Get Started
-                    </Button>
-                  </Link>
-                  <Link to="/forum">
-                    <Button variant="ghost" size="lg">
-                      Learn more
                     </Button>
                   </Link>
                 </div>

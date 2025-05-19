@@ -2,62 +2,35 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PageTitle, LeadText } from "@/components/ui/typography";
-import { Calendar, Clock, MapPin, MessageSquare } from "lucide-react";
+import { Calendar, Clock, MapPin } from "lucide-react";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
-import { useState } from "react";
 
 // Sample event data with registrationLinks
 export const events = [
   {
     id: 1,
     title: "Tech Conference 2024",
-    date: "April 15-17, 2024",
+    date: "June 15-17, 2025",
     time: "9:00 AM - 6:00 PM",
     location: "Convention Center, Bangalore",
     description: "Join us for the biggest tech conference of the year featuring industry leaders, workshops, and networking opportunities.",
     imageUrl: "linear-gradient(225deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%)",
-    speakers: ["Sarah Chen", "Alex Johnson", "Michael Rodriguez"],
-    registrationLink: "https://techconf2024.example.com/register", // Admin-defined link
+    registrationLink: "https://forms.gle/TAF4W3H3T7sR6Khv7", // Admin-defined link
   },
   {
     id: 2,
     title: "AI Summit",
-    date: "May 5-6, 2024",
+    date: "July 5-7, 2025",
     time: "10:00 AM - 5:00 PM",
     location: "Tech Hub, Mumbai",
     description: "Explore the latest in artificial intelligence with hands-on workshops and expert presentations.",
     imageUrl: "linear-gradient(102.3deg, rgba(147,39,143,1) 5.9%, rgba(234,172,232,1) 64%, rgba(246,219,245,1) 89%)",
-    speakers: ["Dr. Emma Thompson", "Prof. Raj Kumar", "Dr. Lisa Wang"],
-    registrationLink: "https://aisummit.example.com/register", // Admin-defined link
+    registrationLink: "https://forms.gle/ZLCNRfepeZXAyxYh6", // Admin-defined link
   },
 ];
 
 export default function Events() {
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [chatMessages, setChatMessages] = useState<Array<{ text: string; isUser: boolean }>>([
-    { text: "Hi! I'm your event assistant. How can I help you today?", isUser: false },
-  ]);
-  const [userInput, setUserInput] = useState("");
-
-  const handleChatSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!userInput.trim()) return;
-
-    // Add user message
-    setChatMessages(prev => [...prev, { text: userInput, isUser: true }]);
-
-    // Simulate AI response
-    setTimeout(() => {
-      setChatMessages(prev => [...prev, { 
-        text: "I'll be happy to help you with information about our events. Please let me know what specific details you're looking for!", 
-        isUser: false 
-      }]);
-    }, 1000);
-
-    setUserInput("");
-  };
-
   const handleRegister = (registrationLink: string) => {
     // Open the registration link in a new tab
     window.open(registrationLink, "_blank", "noopener,noreferrer");
@@ -132,58 +105,6 @@ export default function Events() {
             </div>
           </div>
         </section>
-
-        {/* AI Chatbot */}
-        <div className="fixed bottom-4 left-4 z-50">
-          {!isChatOpen ? (
-            <Button
-              size="icon"
-              className="h-12 w-12 rounded-full shadow-lg"
-              onClick={() => setIsChatOpen(true)}
-            >
-              <MessageSquare className="h-6 w-6" />
-            </Button>
-          ) : (
-            <Card className="w-80">
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="text-lg">Event Assistant</CardTitle>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={() => setIsChatOpen(false)}
-                >
-                  ×
-                </Button>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="h-64 overflow-y-auto space-y-2">
-                  {chatMessages.map((message, index) => (
-                    <div
-                      key={index}
-                      className={`p-2 rounded-lg max-w-[80%] ${
-                        message.isUser
-                          ? "ml-auto bg-primary text-primary-foreground"
-                          : "bg-muted"
-                      }`}
-                    >
-                      {message.text}
-                    </div>
-                  ))}
-                </div>
-                <form onSubmit={handleChatSubmit} className="flex gap-2">
-                  <input
-                    type="text"
-                    value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
-                    placeholder="Ask about events..."
-                    className="flex-1 px-3 py-2 rounded-md border"
-                  />
-                  <Button type="submit" size="sm">Send</Button>
-                </form>
-              </CardContent>
-            </Card>
-          )}
-        </div>
       </main>
 
       <Footer />

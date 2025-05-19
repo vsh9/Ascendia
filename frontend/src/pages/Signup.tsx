@@ -8,11 +8,13 @@ import { PageTitle } from "@/components/ui/typography";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 type UserType = "alumni" | "student" | null;
 
 export default function Signup() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [selectedType, setSelectedType] = useState<UserType>(null);
   const [formData, setFormData] = useState({
     name: "",
@@ -43,10 +45,19 @@ export default function Signup() {
     // If no errors, proceed with signup
     if (!Object.values(newErrors).some(error => error)) {
       console.log("Signup attempted:", { type: selectedType, ...formData });
-      // Here you would typically make an API call to register the user
       
-      // For now, just navigate to login
-      navigate("/login");
+      // Here you would typically make an API call to register the user
+      // For simulation, store login state and set profile setup status
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("hasSetupProfile", "false");
+      
+      toast({
+        title: "Account created successfully!",
+        description: "Please set up your profile to continue.",
+      });
+      
+      // Redirect to profile setup page
+      navigate("/profile/setup");
     }
   };
 

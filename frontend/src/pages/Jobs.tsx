@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageTitle } from "@/components/ui/typography";
-import { Search, MapPin, DollarSign, Briefcase, Clock, Send } from "lucide-react";
+import { Search, MapPin, Circle as CircleIndianRupee, Briefcase, Clock, Send, FileEdit } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -16,14 +16,15 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { indianStates, indianCities } from "@/data/indianLocations";
+import { ResumeUploadModal } from "@/components/jobs/ResumeUploadModal";
 
 const jobs = [
   {
     id: 1,
     title: "Senior Software Engineer",
     company: "TechCorp Solutions",
-    location: "San Francisco, CA",
-    salary: "$120,000 - $160,000",
+    location: "Bengaluru, Karnataka",
+    salary: "₹12,00,000 - ₹16,00,000",
     type: "Full-time",
     experience: "5+ years",
     description: "We're seeking an experienced software engineer to join our team and help build scalable web applications using modern technologies.",
@@ -32,8 +33,8 @@ const jobs = [
     id: 2,
     title: "Product Designer",
     company: "Creative Design Co",
-    location: "New York, NY",
-    salary: "$90,000 - $120,000",
+    location: "Mumbai, Maharashtra",
+    salary: "₹9,00,000 - ₹12,00,000",
     type: "Full-time",
     experience: "3+ years",
     description: "Join our design team to create beautiful and intuitive user interfaces for our enterprise clients.",
@@ -42,8 +43,8 @@ const jobs = [
     id: 3,
     title: "DevOps Engineer",
     company: "Cloud Systems Inc",
-    location: "Remote",
-    salary: "$100,000 - $140,000",
+    location: "Remote, India",
+    salary: "₹10,00,000 - ₹14,00,000",
     type: "Contract",
     experience: "4+ years",
     description: "Help us build and maintain our cloud infrastructure and deployment pipelines using modern DevOps practices.",
@@ -57,13 +58,39 @@ export default function Jobs() {
   const [filters, setFilters] = useState({
     state: "",
     city: "",
-    salary: [50000, 200000],
+    salary: [0, 2000000] as [number, number], // Fixed type as tuple
     type: "",
   });
   const [selectedJob, setSelectedJob] = useState(null);
   const [filteredJobs, setFilteredJobs] = useState(jobs);
+  const [showResumeUpload, setShowResumeUpload] = useState(false);
+  const [showResumeUpdate, setShowResumeUpdate] = useState(false);
+  const [hasResume, setHasResume] = useState(false);
 
-  const handleSalaryChange = (value) => {
+  useEffect(() => {
+    // Check if user has uploaded resume before
+    const hasUploadedResume = localStorage.getItem("hasUploadedResume") === "true";
+    setHasResume(hasUploadedResume);
+    if (!hasUploadedResume) {
+      setShowResumeUpload(true);
+    }
+  }, []);
+
+  const handleResumeUploadComplete = () => {
+    setShowResumeUpload(false);
+    setShowResumeUpdate(false);
+    setHasResume(true);
+  };
+
+  const handleCloseResumeUpload = () => {
+    setShowResumeUpload(false);
+  };
+
+  const handleCloseResumeUpdate = () => {
+    setShowResumeUpdate(false);
+  };
+
+  const handleSalaryChange = (value: [number, number]) => {
     setFilters((prev) => ({ ...prev, salary: value }));
   };
 
@@ -92,7 +119,7 @@ export default function Jobs() {
       <Navbar />
       
       <main className="flex-1">
-        <section className="bg-muted/30 pt-20 pb-12">
+        <section className="bg-muted/30 pt-24 pb-12">
           <div className="container mx-auto px-4">
             <PageTitle className="text-center mb-8">
               Find Your Next Opportunity
@@ -109,9 +136,36 @@ export default function Jobs() {
                   className="pl-10"
                 />
               </div>
+              
+              {hasResume && (
+                <div className="mt-4 flex justify-center">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setShowResumeUpdate(true)}
+                    className="flex items-center gap-2"
+                  >
+                    <FileEdit className="h-4 w-4" />
+                    Update Resume
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </section>
+
+        {/* Resume upload/update modals */}
+        <ResumeUploadModal 
+          isOpen={showResumeUpload} 
+          onClose={handleCloseResumeUpload}
+          onUploadComplete={handleResumeUploadComplete} 
+        />
+        
+        <ResumeUploadModal 
+          isOpen={showResumeUpdate} 
+          onClose={handleCloseResumeUpdate}
+          onUploadComplete={handleResumeUploadComplete}
+          isUpdate={true}
+        />
 
         <section className="py-12">
           <div className="container mx-auto px-4">
@@ -168,16 +222,16 @@ export default function Jobs() {
                     <label className="text-sm font-medium">Salary Range</label>
                     <div className="pt-2">
                       <Slider
-                        defaultValue={[50000, 200000]}
-                        max={200000}
+                        defaultValue={[0, 2000000]}
+                        max={2000000}
                         min={0}
-                        step={5000}
+                        step={50000}
                         value={filters.salary}
                         onValueChange={handleSalaryChange}
                       />
                       <div className="flex justify-between mt-2 text-sm text-muted-foreground">
-                        <span>${filters.salary[0].toLocaleString()}</span>
-                        <span>${filters.salary[1].toLocaleString()}</span>
+                        <span>₹{filters.salary[0].toLocaleString()}</span>
+                        <span>₹{filters.salary[1].toLocaleString()}</span>
                       </div>
                     </div>
                   </div>
@@ -210,21 +264,7 @@ export default function Jobs() {
                     Apply Filters
                   </Button>
 
-                  <Button 
-                    className="w-full"
-                    variant="outline"
-                    onClick={() => {
-                      setFilters({
-                        state: "",
-                        city: "",
-                        salary: [50000, 200000],
-                        type: "",
-                      });
-                      setFilteredJobs(jobs);
-                    }}
-                  >
-                    Reset Filters
-                  </Button>
+                  
                 </CardContent>
               </Card>
 
@@ -260,7 +300,7 @@ export default function Jobs() {
                                   <span>{job.location}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                  <DollarSign className="h-4 w-4 text-muted-foreground" />
+                                  <CircleIndianRupee className="h-4 w-4 text-muted-foreground" />
                                   <span>{job.salary}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -291,7 +331,7 @@ export default function Jobs() {
                           <span className="text-sm">{job.location}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <DollarSign className="h-4 w-4 text-muted-foreground" />
+                          <CircleIndianRupee className="h-4 w-4 text-muted-foreground" />
                           <span className="text-sm">{job.salary}</span>
                         </div>
                         <div className="flex items-center gap-2">

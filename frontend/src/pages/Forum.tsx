@@ -15,8 +15,8 @@ const samplePosts = [
     author: "Alex Johnson",
     content: "Just completed my first machine learning project! Anyone here working on similar projects?",
     timestamp: "2 hours ago",
-    likes: 15,
-    replies: 8,
+    likes: 0,
+    replies: 0,
     isAdmin: false,
   },
   {
@@ -24,17 +24,10 @@ const samplePosts = [
     author: "Sarah Chen",
     content: "Looking for study partners for the upcoming AWS certification. Who's interested?",
     timestamp: "3 hours ago",
-    likes: 12,
-    replies: 5,
+    likes: 0,
+    replies: 0,
     isAdmin: true,
   },
-];
-
-const trendingTopics = [
-  { id: 0, name: "Machine Learning", posts: 156 },
-  { id: 0, name: "Career Growth", posts: 124 },
-  { id: 0, name: "Internships", posts: 98 },
-  { id: 0, name: "Tech Interview Prep", posts: 87 },
 ];
 
 export default function ForumPage() {
@@ -147,25 +140,6 @@ export default function ForumPage() {
 
             {/* Sidebar */}
             <div className="space-y-6">
-              {/* Trending Topics */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5" />
-                    Trending Topics
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {trendingTopics.map((topic) => (
-                      <div key={topic.id} className="flex items-center justify-between">
-                        <span className="text-sm font-medium">{topic.name}</span>
-                        <Badge variant="secondary">{topic.posts} posts</Badge>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
 
               {/* Community Guidelines */}
               <Card>

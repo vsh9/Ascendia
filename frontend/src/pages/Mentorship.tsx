@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -153,14 +152,9 @@ export default function MentorshipPage() {
                       <span>Available: {mentor.availability}</span>
                     </div>
                   </CardContent>
-                  <CardFooter className="flex gap-2">
-                    <Button className="flex-1">
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      Schedule Meeting
-                    </Button>
+                  <CardFooter>
                     <Button 
-                      variant="outline" 
-                      className="flex-1"
+                      className="w-full"
                       onClick={() => setSelectedMentorForChat(mentor)}
                     >
                       <MessageSquare className="mr-2 h-4 w-4" />

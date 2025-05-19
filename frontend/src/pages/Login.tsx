@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,16 +7,19 @@ import { PageTitle } from "@/components/ui/typography";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 type UserType = "alumni" | "student" | null;
 
 export default function Login() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [selectedType, setSelectedType] = useState<UserType>(null);
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
+  const [isNewAccount, setIsNewAccount] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,10 +27,19 @@ export default function Login() {
     
     // Simulating successful login - in a real app this would check credentials
     localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("hasSetupProfile", "false");
     
-    // Redirect to profile setup page
-    navigate("/profile/setup");
+    // Check if this is a first-time login (new account)
+    if (isNewAccount) {
+      localStorage.setItem("hasSetupProfile", "false");
+      toast({
+        title: "Account created!",
+        description: "Please set up your profile to continue."
+      });
+      navigate("/profile/setup");
+    } else {
+      // For existing users, directly navigate to profile page
+      navigate("/profile");
+    }
   };
 
   return (
@@ -74,7 +85,10 @@ export default function Login() {
                 </div>
                 <Button 
                   className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-                  onClick={() => navigate("/signup")}
+                  onClick={() => {
+                    setIsNewAccount(true);
+                    navigate("/signup");
+                  }}
                 >
                   Create Account
                 </Button>
